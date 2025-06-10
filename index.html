@@ -1,0 +1,69 @@
+    <!DOCTYPE html>
+    <html lang="pt-BR">
+    <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Cadastro de Produtos</title>
+    <link rel="stylesheet" href="style.css" />
+    </head>
+    <body>
+    <header>
+        <h1>Ferragem na Mao        </h1>
+        <nav>
+        <ul class="menu">
+            <li><a href="index.html">Produtos</a></li>
+            <li><a href="clientes.html">Clientes</a></li>
+        </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="formulario">
+        <h2>Cadastro de Produtos</h2>
+        <form id="form-produto">
+            <input type="text" id="nome-produto" placeholder="Nome do Produto" required />
+            <input type="text" id="categoria" placeholder="Categoria" required />
+            <input type="number" id="preco" placeholder="Preço" step="0.01" required />
+            <button type="submit">Cadastrar</button>
+        </form>
+        </section>
+
+        <section class="galeria">
+        <h2>Produtos Cadastrados</h2>
+        <div class="cards" id="lista-produtos">
+            <!-- Produtos inseridos aparecem aqui -->
+        </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2025 Ferragem na Mao</p>
+        <div class="redes">
+        <a href="#">Instagram</a> | <a href="#">WhatsApp</a>
+        </div>
+    </footer>
+
+    <script>
+        const formProduto = document.getElementById("form-produto");
+        const listaProdutos = document.getElementById("lista-produtos");
+
+        formProduto.addEventListener("submit", function (e) {
+        e.preventDefault();
+
+        const nome = document.getElementById("nome-produto").value;
+        const categoria = document.getElementById("categoria").value;
+        const preco = document.getElementById("preco").value;
+
+        const card = document.createElement("div");
+        card.className = "card";
+        card.innerHTML = `
+            <img src="ferrgem/img/produtos/martelo.png" alt="Produto">
+            <p><strong>${nome}</strong><br>${categoria} - R$ ${parseFloat(preco).toFixed(2)}</p>
+        `;
+
+        listaProdutos.appendChild(card);
+        formProduto.reset();
+        });
+    </script>
+    </body>
+    </html>
