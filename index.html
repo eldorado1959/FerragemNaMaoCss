@@ -1,69 +1,113 @@
-    <!DOCTYPE html>
-    <html lang="pt-BR">
-    <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Cadastro de Produtos</title>
-    <link rel="stylesheet" href="style.css" />
-    </head>
-    <body>
-    <header>
-        <h1>Ferragem na Mao        </h1>
-        <nav>
-        <ul class="menu">
-            <li><a href="index.html">Produtos</a></li>
-            <li><a href="clientes.html">Clientes</a></li>
-        </ul>
-        </nav>
-    </header>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Cadastro de Produtos</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- Cabeçalho do site com título e navegação -->
+  <header>
+    <h1>Ferragem na Mao</h1>
+    <nav>
+      <ul class="menu">
+        <li><a href="index.html">Produtos</a></li>
+        <li><a href="clientes.html">Clientes</a></li>
+      </ul>
+    </nav>
+  </header>
 
-    <main>
-        <section class="formulario">
-        <h2>Cadastro de Produtos</h2>
-        <form id="form-produto">
-            <input type="text" id="nome-produto" placeholder="Nome do Produto" required />
-            <input type="text" id="categoria" placeholder="Categoria" required />
-            <input type="number" id="preco" placeholder="Preço" step="0.01" required />
-            <button type="submit">Cadastrar</button>
-        </form>
-        </section>
+  <main>
+    <!-- Seção do formulário de cadastro -->
+    <section class="formulario">
+      <h2>Cadastro de Produtos</h2>
+      <form id="form-produto">
+        <!-- Campo para o nome do produto -->
+        <input type="text" id="nome-produto" placeholder="Nome do Produto" required />
+        <!-- Campo para categoria -->
+        <input type="text" id="categoria" placeholder="Categoria" required />
+        <!-- Campo para preço -->
+        <input type="number" id="preco" placeholder="Preço" step="0.01" required />
+        <!-- Botão de envio -->
+        <button type="submit">Cadastrar</button>
+      </form>
+    </section>
 
-        <section class="galeria">
-        <h2>Produtos Cadastrados</h2>
-        <div class="cards" id="lista-produtos">
-            <!-- Produtos inseridos aparecem aqui -->
-        </div>
-        </section>
-    </main>
+    <!-- Seção que exibe os produtos cadastrados -->
+    <section class="galeria">
+      <h2>Produtos Cadastrados</h2>
+      <div class="cards" id="lista-produtos">
+        <!-- Os produtos aparecerão dinamicamente aqui -->
+      </div>
+    </section>
+  </main>
 
-    <footer>
-        <p>© 2025 Ferragem na Mao</p>
-        <div class="redes">
-        <a href="#">Instagram</a> | <a href="#">WhatsApp</a>
-        </div>
-    </footer>
+  <!-- Rodapé com redes sociais -->
+  <footer>
+    <p>© 2025 Ferragem na Mao</p>
+    <div class="redes">
+      <a href="#">Instagram</a> | <a href="#">WhatsApp</a>
+    </div>
+  </footer>
 
-    <script>
-        const formProduto = document.getElementById("form-produto");
-        const listaProdutos = document.getElementById("lista-produtos");
+  <!-- Script JavaScript para gerenciar o cadastro e edição dos produtos -->
+  <script>
+    // Referência ao formulário de produto e ao contêiner da lista de produtos
+    const formProduto = document.getElementById("form-produto");
+    const listaProdutos = document.getElementById("lista-produtos");
 
-        formProduto.addEventListener("submit", function (e) {
-        e.preventDefault();
+    // Escutador de evento para o envio do formulário
+    formProduto.addEventListener("submit", function (e) {
+      e.preventDefault(); // Evita recarregar a página
 
-        const nome = document.getElementById("nome-produto").value;
-        const categoria = document.getElementById("categoria").value;
-        const preco = document.getElementById("preco").value;
+      // Obtém os valores digitados pelo usuário
+      const nome = document.getElementById("nome-produto").value;
+      const categoria = document.getElementById("categoria").value;
+      const preco = document.getElementById("preco").value;
 
-        const card = document.createElement("div");
-        card.className = "card";
-        card.innerHTML = `
-            <img src="ferrgem/img/produtos/martelo.png" alt="Produto">
-            <p><strong>${nome}</strong><br>${categoria} - R$ ${parseFloat(preco).toFixed(2)}</p>
-        `;
+      // Cria um novo card de produto
+      const card = document.createElement("div");
+      card.className = "card";
 
-        listaProdutos.appendChild(card);
-        formProduto.reset();
-        });
-    </script>
-    </body>
-    </html>
+      // Conteúdo HTML do card com campos editáveis (mas inicialmente bloqueados)
+      card.innerHTML = `
+        <img src="C:\Users\Aluno\Documents\UC12\Aula 1\Ferragem\img\produtos\martelo.JPG" alt="Produto">
+        <p>
+          <strong contenteditable="false">${nome}</strong><br>
+          <span contenteditable="false">${categoria}</span> -
+          R$ <span contenteditable="false">${parseFloat(preco).toFixed(2)}</span>
+        </p>
+        <!-- Botões para editar e salvar -->
+        <button class="editar">Editar</button>
+        <button class="salvar" style="display: none;">Salvar</button>
+      `;
+
+      // Referências aos botões e campos do card
+      const btnEditar = card.querySelector(".editar");
+      const btnSalvar = card.querySelector(".salvar");
+      const campos = card.querySelectorAll("[contenteditable]");
+
+      // Evento do botão "Editar": ativa edição dos campos
+      btnEditar.addEventListener("click", () => {
+        campos.forEach(campo => campo.contentEditable = "true"); // Ativa edição
+        btnEditar.style.display = "none"; // Esconde botão Editar
+        btnSalvar.style.display = "inline-block"; // Mostra botão Salvar
+      });
+
+      // Evento do botão "Salvar": salva as edições e bloqueia os campos
+      btnSalvar.addEventListener("click", () => {
+        campos.forEach(campo => campo.contentEditable = "false"); // Desativa edição
+        btnEditar.style.display = "inline-block"; // Mostra botão Editar
+        btnSalvar.style.display = "none"; // Esconde botão Salvar
+      });
+
+      // Adiciona o card à galeria
+      listaProdutos.appendChild(card);
+
+      // Limpa os campos do formulário
+      formProduto.reset();
+    });
+  </script>
+</body>
+</html>
